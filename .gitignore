@@ -1,0 +1,16 @@
+# Terraform 
+**/.terraform/*
+**/.terraform.*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*rfvars.json
+.terraformrc
+terraform.rc
+*.img
+
+
+
+

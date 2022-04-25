@@ -1,0 +1,9 @@
+variable "ssh_key" {
+  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDq8rvYU2B4d0FDDYf6oBxEv+Y95+G0wviHHRfFrjNnNzenvOmdCxX41DaAK8jfxOnxz3Raki/T+tslAgAu/kLp0ZGs5RnDgvtndy4Q8B1Uz5jmcOdgpt428692lw5FaJKZji4hOz69COi/Cgs6CqfhlwxIp2qpnZ/vvNloFucdfgDZQf8oqo7QjYT5X+ZsdyEAeIOyfPh9oKgtRaRUm3ux+WbLk0+Pfqjq88TwsJNPbWMbCGjg7kLMuaoElb+hRmX1GcWor0JvmInPXCon8+z2DVlQPtjfxlHgQpoaHEt90MDdbDBunTFO7n3YfTE3p5FOifFE/QKiK6Uda72jc86bBy6nZxe+LLTWQIQRdgQbzpIEenZO+rArrsXiusuhX/DhHLQwng8r7kVcIJvuzqa3vw5384BELEly3W1jSN+GmeLkbUVeyY1O2RM8d3xAo2oz4uWuj1LYLnmdwOSRReyzSV4eRHwBErlsHmtCbh++LPbOlZOP1+RawrlKowl6WqaBlR3AMlUh1pup/tgnwKK2nxBDAAz5eLvTAarF6hp9Vtx3p4jwQgMiD61Bn33Fn+6gjAdzzPlxcY9tOM4E5PxXJnBx3TPegpOERZcNcVteJSQDH3fxy+ApY+pKyIUsOO60H4o5MaNCU6l6La4sna5idyFOVLJ58z7D2ZdU7Q9jnQ== marc@thinkpad-x1"
+}
+variable "proxmox_host" {
+    default = "pve"
+}
+variable "template_name" {
+    default = "ubuntu-2004-cloudinit-template"
+}
