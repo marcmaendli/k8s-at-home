@@ -4,15 +4,15 @@ k8s-at-home
 ## ToDo
 
 ### Proxmox
-[] Reinstall Proxmox
-[] 2 Partitions: Proxmox System
+- [ ]  Reinstall Proxmox
+- [ ]  2 Partitions: Proxmox System
 - [ ] Configure Proxmox NFS Storage for Images
 ### Terraform
-- [] Choose OS for K3S Nodes
-- [] Provisioning 5 VM on Proxmox with TF
+- [ ]  Choose OS for K3S Nodes
+- [ ]  Provisioning 5 VM on Proxmox with TF
 ### K3S
-- [] Create Ansible Playbook for deploying a running K3S Cluster
-- [] 
+- [ ]  Create Ansible Playbook for deploying a running K3S Cluster
+- [ ]  
 
 ## Useful Links
 [Provisioning VMs with Terraform on Proxmox](https://vectops.com/2020/05/provision-proxmox-vms-with-terraform-quick-and-easy/)
