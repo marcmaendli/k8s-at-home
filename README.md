@@ -6,7 +6,7 @@ k8s-at-home
 ### Proxmox
 [] Reinstall Proxmox
 [] 2 Partitions: Proxmox System
-- [] Configure Proxmox NFS Storage for Images
+- [ ] Configure Proxmox NFS Storage for Images
 ### Terraform
 - [] Choose OS for K3S Nodes
 - [] Provisioning 5 VM on Proxmox with TF
