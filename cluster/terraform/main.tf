@@ -1,35 +1,33 @@
-terraform {
-  required_providers {
-    proxmox = {
-      source = "telmate/proxmox"
-      version = "2.7.4"
-      }
-  }
-}
-
 provider "proxmox" {
-  pm_api_url = "https://pve:8006/api2/json"
-  pm_user = "root@pam"
-  # pm_password = ""
-  # pm_api_token_id = "marc#pam!e8800db8-c329-11ec-9d64-0242ac120002"
-  # pm_api_token_secret = "a8c0ea11-b0aa-440c-9998-b1752ebd212a"
-  pm_tls_insecure = true
+    pm_api_url = var.proxmox_host["pm_api_url"]
+    pm_user = var.proxmox_host["pm_user"]
+    pm_tls_insecure = true
 }
 
-resource "proxmox_vm_qemu" "k8s-at-home" {
-  count = 1
-  name = "k8s-vm-${count.index + 1}"
-  target_node = var.proxmox_host
-  clone = var.template_name
-
-  agent = 1
-  os_type = "cloud-init"
+resource "proxmox_vm_qemu" "prox-vm" {
+  count = length(var.hostnames)
+  name = var.hostnames[count.index]
+  target_node = var.proxmox_host["target_node"]
+  vmid = var.vmid + count.index
+  full_clone = true
+  clone = "cloud-init-focal"
+  
   cores = 2
   sockets = 1
-  cpu = "host"
+  vcpus = 2
   memory = 2048
+  balloon = 2048
+  boot = "c"
+  bootdisk = "virtio0"
+
   scsihw = "virtio-scsi-pci"
-  bootdisk = "scsi0"
+
+  onboot = false
+  agent = 1
+  cpu = "kvm64"
+  numa = true
+
+  os_type = "cloud-init"
 
   disk {
     size = "10G"
@@ -43,15 +41,35 @@ resource "proxmox_vm_qemu" "k8s-at-home" {
     bridge = "vmbr0"
   }
 
+  ipconfig0 = "ip=${var.ips[count.index]}/24,gw=${cidrhost(format("%s/24", var.ips[count.index]), 1)}"
+
   lifecycle {
     ignore_changes = [
       network,
     ]
   }
 
-  ipconfig0 ="ip=10.98.1.9${count.index + 1}/24,gw=10.98.1.1"
+   #creates ssh connection to check when the CT is ready for ansible provisioning
+  connection {
+    host = var.ips[count.index]
+    user = var.user
+    private_key = file(var.ssh_keys["priv"])
+    agent = false
+    timeout = "3m"
+  }
 
-  sshkeys = <<EOF
-  ${var.ssh_key}
-  EOF
+  provisioner "remote-exec" {
+	  # Leave this here so we know when to start with Ansible local-exec 
+    inline = [ "echo 'Cool, we are ready for provisioning'"]
+  }
+  
+  provisioner "local-exec" {
+      working_dir = "../../ansible/"
+      command = "ansible-playbook -u ${var.user} --key-file ${var.ssh_keys["priv"]} -i ${var.ips[count.index]}, provision.yaml"
+  }
+  
+  provisioner "local-exec" {
+      working_dir = "../../ansible/"
+      command = "ansible-playbook -u ${var.user} --key-file ${var.ssh_keys["priv"]} -i ${var.ips[count.index]}, install-qemu-guest-agent.yaml"
+  }
 }
